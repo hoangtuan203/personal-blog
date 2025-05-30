@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: follow-service
+server:
+  port: 8084

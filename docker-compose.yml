@@ -1,0 +1,226 @@
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: blog-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql:/docker-entrypoint-initdb.d
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - blog-network
+
+  auth-service:
+    build: ./auth-service
+    container_name: auth-service
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/blog_auth_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    ports:
+      - "8081:8080"
+    networks:
+      - blog-network
+
+  post-service:
+    build: ./post-service
+    container_name: post-service
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/blog_post_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    ports:
+      - "8082:8080"
+    networks:
+      - blog-network
+
+  comment-service:
+    build: ./comment-service
+    container_name: comment-service
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/blog_comment_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    ports:
+      - "8083:8080"
+    networks:
+      - blog-network
+
+  media-service:
+    build: ./media-service
+    container_name: media-service
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/blog_media_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    ports:
+      - "8084:8080"
+    networks:
+      - blog-network
+
+  notification-service:
+    build: ./notification-service
+    container_name: notification-service
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/blog_notification_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    ports:
+      - "8085:8080"
+    networks:
+      - blog-network
+
+  like-service:
+    build: ./like-service
+    container_name: like-service
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/blog_like_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    ports:
+      - "8086:8080"
+    networks:
+      - blog-network
+
+  follow-service:
+    build: ./follow-service
+    container_name: follow-service
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/blog_follow_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    ports:
+      - "8087:8080"
+    networks:
+      - blog-network
+
+  tag-service:
+    build: ./tag-service
+    container_name: tag-service
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/blog_tag_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    ports:
+      - "8088:8080"
+    networks:
+      - blog-network
+
+  category-service:
+    build: ./category-service
+    container_name: category-service
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/blog_category_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    ports:
+      - "8089:8080"
+    networks:
+      - blog-network
+
+  analytics-service:
+    build: ./analytics-service
+    container_name: analytics-service
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/blog_analytics_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    ports:
+      - "8090:8080"
+    networks:
+      - blog-network
+
+  search-service:
+    build: ./search-service
+    container_name: search-service
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/blog_search_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    ports:
+      - "8091:8080"
+    networks:
+      - blog-network
+
+  admin-service:
+    build: ./admin-service
+    container_name: admin-service
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/blog_admin_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    ports:
+      - "8092:8080"
+    networks:
+      - blog-network
+
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/blog_user_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    ports:
+      - "8093:8080"
+    networks:
+      - blog-network
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    depends_on:
+      - auth-service
+      - post-service
+      - comment-service
+      - media-service
+      - notification-service
+      - like-service
+      - follow-service
+      - tag-service
+      - category-service
+      - analytics-service
+      - search-service
+      - admin-service
+      - user-service
+    ports:
+      - "8080:8080"
+    networks:
+      - blog-network
+
+volumes:
+  mysql_data:
+
+networks:
+  blog-network:
+    driver: bridge

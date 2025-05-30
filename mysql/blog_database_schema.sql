@@ -1,0 +1,159 @@
+
+-- DATABASE FOR AUTH SERVICE
+CREATE DATABASE IF NOT EXISTS blog_auth_db;
+USE blog_auth_db;
+
+CREATE TABLE IF NOT EXISTS users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    bio TEXT,
+    avatar_url VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS roles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS user_roles (
+    user_id BIGINT,
+    role_id INT,
+    PRIMARY KEY (user_id, role_id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (role_id) REFERENCES roles(id)
+);
+
+-- DATABASE FOR POST SERVICE
+CREATE DATABASE IF NOT EXISTS blog_post_db;
+USE blog_post_db;
+
+CREATE TABLE IF NOT EXISTS categories (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    slug VARCHAR(100) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tags (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    slug VARCHAR(100) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS posts (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    title VARCHAR(200) NOT NULL,
+    slug VARCHAR(200) UNIQUE NOT NULL,
+    content LONGTEXT,
+    thumbnail_url VARCHAR(255),
+    category_id BIGINT,
+    is_published BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS post_tags (
+    post_id BIGINT,
+    tag_id BIGINT,
+    PRIMARY KEY (post_id, tag_id)
+);
+
+-- DATABASE FOR COMMENT SERVICE
+CREATE DATABASE IF NOT EXISTS blog_comment_db;
+USE blog_comment_db;
+
+CREATE TABLE IF NOT EXISTS comments (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    post_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    parent_id BIGINT DEFAULT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- DATABASE FOR MEDIA SERVICE
+CREATE DATABASE IF NOT EXISTS blog_media_db;
+USE blog_media_db;
+
+CREATE TABLE IF NOT EXISTS media_files (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT,
+    url VARCHAR(255),
+    file_type VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- DATABASE FOR NOTIFICATION SERVICE
+CREATE DATABASE IF NOT EXISTS blog_notify_db;
+USE blog_notify_db;
+
+CREATE TABLE IF NOT EXISTS notifications (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    message TEXT NOT NULL,
+    is_read BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- DATABASE FOR FOLLOW SERVICE
+CREATE DATABASE IF NOT EXISTS blog_follow_db;
+USE blog_follow_db;
+
+CREATE TABLE IF NOT EXISTS follows (
+    follower_id BIGINT NOT NULL,
+    following_id BIGINT NOT NULL,
+    followed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (follower_id, following_id)
+);
+
+-- DATABASE FOR LIKE SERVICE
+CREATE DATABASE IF NOT EXISTS blog_like_db;
+USE blog_like_db;
+
+CREATE TABLE IF NOT EXISTS post_likes (
+    user_id BIGINT NOT NULL,
+    post_id BIGINT NOT NULL,
+    liked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, post_id)
+);
+
+CREATE TABLE IF NOT EXISTS comment_likes (
+    user_id BIGINT NOT NULL,
+    comment_id BIGINT NOT NULL,
+    liked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, comment_id)
+);
+
+-- DATABASE FOR ANALYTICS SERVICE
+CREATE DATABASE IF NOT EXISTS blog_analytics_db;
+USE blog_analytics_db;
+
+CREATE TABLE IF NOT EXISTS post_views (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    post_id BIGINT,
+    user_id BIGINT,
+    viewed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- DATABASE FOR ADMIN SERVICE
+CREATE DATABASE IF NOT EXISTS blog_admin_db;
+USE blog_admin_db;
+
+CREATE TABLE IF NOT EXISTS reports (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    reported_by BIGINT,
+    post_id BIGINT,
+    reason TEXT,
+    status VARCHAR(50) DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS blocked_users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT,
+    reason TEXT,
+    blocked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
