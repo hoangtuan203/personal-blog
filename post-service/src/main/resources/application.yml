@@ -16,3 +16,5 @@ spring:
           dialect: org.hibernate.dialect.MySQL8Dialect
 server:
   port: 8088
+  servlet:
+    context-path: /post

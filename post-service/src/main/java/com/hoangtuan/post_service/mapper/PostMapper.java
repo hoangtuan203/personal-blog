@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface PostMapper {
-    @Mapping(source = "user_id", target = "userId")
-    @Mapping(source = "category_id", target = "categoryId")
+    @Mapping(source = "userId", target = "userId")
+    @Mapping(source = "categoryId", target = "categoryId")
     PostResponse toPostResponse(Post post);
 }
