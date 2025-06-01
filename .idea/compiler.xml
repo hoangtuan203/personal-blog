@@ -3,7 +3,7 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
-      <profile name="Annotation profile for auth-service" enabled="true">
+      <profile name="Annotation profile for post-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -14,8 +14,8 @@
         <module name="category-service" />
         <module name="user-service" />
         <module name="notification-service" />
-        <module name="auth-service" />
         <module name="post-service" />
+        <module name="auth-service" />
         <module name="comment-service" />
         <module name="tag-service" />
         <module name="search-service" />

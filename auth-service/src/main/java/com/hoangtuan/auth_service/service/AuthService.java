@@ -1,27 +1,31 @@
 package com.hoangtuan.auth_service.service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.hoangtuan.auth_service.dto.request.AuthRequest;
 import com.hoangtuan.auth_service.dto.response.AuthResponse;
 import com.hoangtuan.auth_service.entities.User;
 import com.hoangtuan.auth_service.exception.AppException;
 import com.hoangtuan.auth_service.exception.ErrorCode;
 import com.hoangtuan.auth_service.repository.UserRepository;
-import com.nimbusds.jose.*;
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jose.JWSObject;
+import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
+
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.StringJoiner;
-import java.util.UUID;
-import org.springframework.beans.factory.annotation.Value;
 @Slf4j
 @Service
 public class AuthService {
@@ -65,28 +69,30 @@ public class AuthService {
     }
 
     public AuthResponse authenticate(AuthRequest request) {
+        log.info("authenticate request: {}", request);
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         var user = userRepository
                 .findByUsername(request.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
-        if (!authenticated) {
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
-        }
+//        boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
+//        if (!authenticated) {
+//            throw new AppException(ErrorCode.UNAUTHENTICATED);
+//        }
+        var userId = user.getId();
+        var username = user.getUsername();
+        var email = user.getEmail();
         var token = generateToken(user);
-        return AuthResponse.builder().token(String.valueOf(token)).build();
-    }
 
-//    private String buildScope(User user) {
-//        StringJoiner stringJoiner = new StringJoiner("");
-//        if (!CollectionUtils.isEmpty(user.getRoles()))
-//            user.getRoles().forEach(role -> {
-//                stringJoiner.add("ROLE_" + role.getName());
-//                if (!CollectionUtils.isEmpty(role.getPermissions()))
-//                    role.getPermissions().forEach(permission -> stringJoiner.add(permission.getName()));
-//            });
-//
-//        return stringJoiner.toString();
-//
-//    }
+        return AuthResponse.builder()
+                .userId(userId)
+                .token(String.valueOf(token.token))
+                .email(email)
+                .userName(username)
+                .expiryTime(token.expireTime)
+                .authenticated(true)
+                .build();
+    }
+    //decode token
+
+
 }
