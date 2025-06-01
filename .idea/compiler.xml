@@ -8,15 +8,15 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
         <module name="follow-service" />
         <module name="category-service" />
         <module name="user-service" />
         <module name="notification-service" />
         <module name="post-service" />
-        <module name="auth-service" />
         <module name="comment-service" />
+        <module name="auth-service" />
         <module name="tag-service" />
         <module name="search-service" />
         <module name="like-service" />
