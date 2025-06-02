@@ -1,70 +1,65 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { SunIcon, MoonIcon, PlusCircleIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Search, Plus } from "lucide-react";
+import UserMenu from "../../user/UserMenu";
+import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
+import { ModeToggle } from "../../theme/model-toggle";
 
 const HeaderLayout: React.FC = () => {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-  );
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isDarkMode]);
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
-  const handleLoginLogout = () => {
-    if (isAuthenticated) {
-      setIsAuthenticated(false);
-      navigate("/login");
-    } else {
-      navigate("/login");
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      console.log("Search:", searchQuery);
     }
   };
 
   return (
-    <header className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50 border-b border-gray-200 dark:border-gray-700">
-      <div className="w-full px-4 sm:px-6 lg:px-12 py-2 flex justify-between items-center max-w-screen-2xl mx-auto">
-        <Link to="/" className="text-xl font-semibold text-blue-600 dark:text-blue-400">
-          MyBlog
-        </Link>
-        <div className="flex items-center space-x-6">
-          <Link to="/" className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400">
-            Home
-          </Link>
-          <Link to="/blog" className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400">
-            Blog
-          </Link>
-          <Link to="/tags" className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400">
-            Tags
-          </Link>
-          {isAuthenticated && (
-            <Link to="/create-post" className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 flex items-center">
-              <PlusCircleIcon className="w-5 h-5 mr-1" /> New Post
-            </Link>
-          )}
-          <button
-            onClick={handleLoginLogout}
-            className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 flex items-center"
+    <header className="bg-white dark:bg-black shadow-sm border-b border-black dark:border-white sticky top-0 z-40 w-full">
+      <div className="w-full max-w-none mx-auto">
+        <div className="flex items-center justify-between px-4 sm:px-6 lg:px-12 py-3">
+          <form
+            onSubmit={handleSearch}
+            className="flex items-center w-full max-w-xs md:max-w-sm lg:max-w-md lg:ml-0 ml-4"
           >
-            <UserCircleIcon className="w-5 h-5 mr-1" />
-            {isAuthenticated ? "Logout" : "Login"}
-          </button>
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
-            aria-label="Toggle theme"
-          >
-            {isDarkMode ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
-          </button>
+            <Input
+              placeholder="Search posts..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="bg-gray-100 dark:bg-gray-900 border-black dark:border-white text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 rounded-r-none focus:ring-black dark:focus:ring-white w-full"
+            />
+            <Button
+              type="submit"
+              variant="default"
+              size="icon"
+              className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 rounded-l-none border border-black dark:border-white"
+            >
+              <Search className="w-4 h-4" />
+            </Button>
+          </form>
+          <div className="flex items-center space-x-4">
+            <nav className="hidden md:flex items-center space-x-6">
+              {isAuthenticated && (
+                <Link
+                  to="/create-post"
+                  className="flex items-center text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
+                >
+                  <Plus className="w-5 h-5 mr-1" />
+                  Bài viết mới
+                </Link>
+              )}
+            </nav>
+            <div className="flex items-center space-x-2">
+              <UserMenu
+                isAuthenticated={isAuthenticated}
+                setIsAuthenticated={setIsAuthenticated}
+              />
+              <ModeToggle />
+            </div>
+          </div>
         </div>
       </div>
     </header>
