@@ -54,7 +54,7 @@ export const ProfilePanel: React.FC<ProfilePanelProps> = ({ isOpen, onClose }) =
             <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
               User Information
             </h3>
-            <Link to="/profile" onClick={onClose}>
+            <Link to="/profile/edit" onClick={onClose}>
               <Button
                 variant="ghost"
                 className="p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-full"

@@ -23,13 +23,13 @@ const HeaderLayout: React.FC = () => {
         <div className="flex items-center justify-between px-4 sm:px-6 lg:px-12 py-3">
           <form
             onSubmit={handleSearch}
-            className="flex items-center w-full max-w-xs md:max-w-sm lg:max-w-md lg:ml-0 ml-4"
+            className="flex items-center w-full lg:ml-0 ml-4"
           >
             <Input
               placeholder="Search posts..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-gray-100 dark:bg-gray-900 border-black dark:border-white text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 rounded-r-none focus:ring-black dark:focus:ring-white w-full"
+              className="bg-gray-100 dark:bg-gray-900 border-black dark:border-white text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 rounded-r-none focus:ring-black dark:focus:ring-white flex-1"
             />
             <Button
               type="submit"
