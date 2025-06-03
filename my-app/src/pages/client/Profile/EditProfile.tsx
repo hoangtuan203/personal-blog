@@ -69,9 +69,9 @@ export default function EditProfile() {
         <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-emerald-400/20 to-blue-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
-      <div className="relative max-w-2xl mx-auto">
+      <div className="relative w-full  px-0 sm:px-2 lg:px-4">
         {/* Glass Card Container */}
-        <div className="backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 rounded-3xl border border-white/20 dark:border-gray-700/50 shadow-2xl shadow-blue-500/10 dark:shadow-purple-500/20 p-8 sm:p-10 space-y-8 transform hover:scale-[1.01] transition-all duration-700">
+        <div className="backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 rounded-3xl border border-white/20 dark:border-gray-700/50 shadow-2xl shadow-blue-500/10 dark:shadow-purple-500/20 p-4 sm:p-6 lg:p-8 space-y-8 transform hover:scale-[1.01] transition-all duration-700">
           
           {/* Header with Gradient */}
           <div className="flex items-center justify-between">
@@ -222,9 +222,9 @@ export default function EditProfile() {
           </div>
         </div>
 
-        {/* Success Message (would show after save) */}
+        {/* Success Message */}
         {userInfo.name === tempUserInfo.name && userInfo.email === tempUserInfo.email && (
-          <div className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-2xl">
+          <div className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-2xl w-full">
             <p className="text-green-800 dark:text-green-200 text-sm text-center">
               ✨ Profile updated successfully!
             </p>
@@ -233,4 +233,4 @@ export default function EditProfile() {
       </div>
     </div>
   );
-}
+} 

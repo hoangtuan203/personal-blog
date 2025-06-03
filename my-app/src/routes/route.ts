@@ -1,10 +1,10 @@
-import DefaultLayout from "../components/layouts/client/DefaultLayout";
 import Home from "../pages/client/Home/Home";
-import DetailBlog from "../pages/client/Blog/DetailBlog";
 import ListBlog from "../pages/client/Blog/ListBlog";
 import Tag from "../pages/client/Tag/Tag";
 import Forum from "../pages/client/Forum/Forum";
 import EditProfile from "../pages/client/Profile/EditProfile";
+import DetailBlog from "../pages/client/Blog/DetailBlog";
+import DefaultLayout from "../components/layouts/client/DefaultLayout";
 
 const publicRoutes = [
   { path: "/", component: Home, layout: DefaultLayout },

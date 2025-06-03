@@ -1,10 +1,7 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { UserCircleIcon } from "@heroicons/react/24/solid";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { ModeToggle } from "../theme/model-toggle";
+import { Link } from "react-router-dom";
+import { Plus } from "lucide-react";
 import { Button } from "../ui/button";
-
 
 interface UserMenuProps {
   isAuthenticated: boolean;
@@ -12,89 +9,54 @@ interface UserMenuProps {
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ isAuthenticated, setIsAuthenticated }) => {
-  const navigate = useNavigate();
-
   const handleLogout = () => {
     setIsAuthenticated(false);
-    navigate("/login");
   };
 
   return (
     <div className="relative">
       {isAuthenticated ? (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              className="flex items-center text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
-              aria-label="Menu người dùng"
-            >
-              <div className="w-8 h-8 rounded-full bg-white dark:bg-black border border-black dark:border-white flex items-center justify-center overflow-hidden hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-200">
-                <UserCircleIcon className="w-6 h-6 text-black dark:text-white" />
-              </div>
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            className="w-56 bg-white dark:bg-black border-black dark:border-white rounded-lg shadow-xl"
-          >
-            <DropdownMenuItem asChild>
-              <Link
-                to="/profile"
-                className="flex items-center px-4 py-3 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors duration-150"
-              >
-                <span className="font-medium">Hồ sơ</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link
-                to="/settings"
-                className="flex items-center px-4 py-3 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors duration-150"
-              >
-                <span className="font-medium">Cài đặt</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link
-                to="/my-posts"
-                className="flex items-center px-4 py-3 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors duration-150"
-              >
-                <span className="font-medium">Bài viết của tôi</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator className="bg-black dark:bg-white" />
-            <DropdownMenuItem asChild>
-              <div className="px-4 py-3">
-                <ModeToggle />
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
+        <>
+          {/* Full-sized button for md screens and above */}
+          <div className="hidden md:flex items-center">
+            <Link to="/create-post">
               <Button
-                variant="ghost"
-                className="w-full text-left flex items-center px-4 py-3 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors duration-150"
-                onClick={handleLogout}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold px-4 py-2 rounded-xl flex items-center space-x-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-100"
               >
-                <span className="font-medium">Đăng xuất</span>
+                <Plus className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+                <span>Bài viết mới</span>
               </Button>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            </Link>
+          </div>
+          {/* Icon-only button for mobile screens */}
+          <div className="flex md:hidden items-center">
+            <Link to="/create-post">
+              <Button
+                size="icon"
+                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-100"
+              >
+                <Plus className="w-5 h-5" />
+              </Button>
+            </Link>
+          </div>
+        </>
       ) : (
         <div className="flex items-center space-x-4">
           <Button
             variant="outline"
             size="sm"
             asChild
-            className="font-medium text-black dark:text-white border-black dark:border-white hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors duration-150"
+            className="font-medium text-black dark:text-white border-gray-600 dark:border-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-150"
           >
-            <Link to="/login">Sign In</Link>
+            <Link to="/">Sign In</Link>
           </Button>
           <Button
             variant="default"
             size="sm"
             asChild
-            className="font-medium bg-black text-white dark:bg-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-150"
+            className="font-medium bg-black text-white dark:bg-gray-200 dark:text-black hover:bg-gray-800 dark:hover:bg-gray-300 transition-colors duration-150"
           >
-            <Link to="/signup">Sign Up</Link>
+            <Link to="/sign-up">Sign Up</Link>
           </Button>
         </div>
       )}

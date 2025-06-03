@@ -15,7 +15,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
         <div className="flex-1 flex flex-col lg:ml-64 w-full max-w-full min-w-0">
           <HeaderLayout />
           <main className="flex-1 overflow-auto animate-[fadeIn_0.5s_ease-out]">
-            <div className="w-full max-w-full px-4 sm:px-6 lg:px-8 py-6 min-w-0">
+            <div className="w-full max-w-full px-0 sm:px-2 lg:px-4 py-6 min-w-0">
               {children}
             </div>
           </main>
@@ -25,4 +25,4 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
   );
 };
 
-export default DefaultLayout; 
+export default DefaultLayout;
